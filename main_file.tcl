@@ -4,9 +4,9 @@
 wipe;
 
 
-
 set analysistype "modal"; #[model, gravity, modal, PO, NRHA]
-set dataDir "Outputs_${analysistype}"; # set up name of data directory (you can remove this)
+set dataDir "Outputs_${analysistype}_IDA_8g"; # set up name of data directory (you can remove this)
+#set dataDir "Outputs_${analysistype}"; # set up name of data directory (you can remove this)
 file mkdir $dataDir; 				# create data directory
 
 source analysis_type.tcl;

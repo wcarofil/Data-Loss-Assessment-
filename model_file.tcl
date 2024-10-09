@@ -82,6 +82,7 @@ set A_p [expr 1.0e8]; # Area of the section mm^2
 #Foundations
 node 10 	[expr $l*0.0] 		[expr $h1*0.0];
 node 20 	[expr $l*1.0] 		[expr $h1*0.0];
+node 30 	[expr $l*1.5] 		[expr $h1*0.0];
 node 40 	[expr $l*2.0] 		[expr $h1*0.0];
 node 50 	[expr $l*3.0] 		[expr $h1*0.0];
 node 60 	[expr $l*3.0+1000] 		[expr $h1*0.0];
@@ -187,6 +188,7 @@ for {set i 1} {$i <=$nfl} {incr i 1} {
 # Single point constraints -- Boundary Conditions
 fix 10 1 1 1;
 fix 20 1 1 1;
+fix 30 1 1 1;
 fix 40 1 1 1;
 fix 50 1 1 1;
 fix 60 1 1 0;
@@ -935,6 +937,49 @@ rotPanelZone2D 600161 1603 1604 $Es $fy [expr $colext5*2.0] 371.0	22.0	13.0	[exp
 rotPanelZone2D 600261 2603 2604 $Es $fy [expr $colint5*2.0] 325.0	19.0	13.0	[expr $beam5*2.0] $Ry $as_PZ;
 rotPanelZone2D 600461 4603 4604 $Es $fy [expr $colint5*2.0] 325.0	19.0	13.0	[expr $beam5*2.0] $Ry $as_PZ;
 rotPanelZone2D 600561 5603 5604 $Es $fy [expr $colext5*2.0] 371.0	22.0	13.0	[expr $beam5*2.0] $Ry $as_PZ;
+
+# E = 30GPa
+uniaxialMaterial	Steel01	1011	600	161.1	0.1
+uniaxialMaterial	ElasticBilin	1031	666.1	9.8	0.29
+uniaxialMaterial	Steel01	1012	525	176	0.1
+uniaxialMaterial	ElasticBilin	1032	670.0	12.2	0.29
+uniaxialMaterial	Steel01	1013	472.5	158.4	0.1
+uniaxialMaterial	ElasticBilin	1033	668.5	10.7	0.26
+uniaxialMaterial	Steel01	1014	382.5	128.2	0.1
+uniaxialMaterial	ElasticBilin	1034	645.5	10.7	0.27
+uniaxialMaterial	Steel01	1015	318.8	106.9	0.1
+uniaxialMaterial	ElasticBilin	1035	641.6	6.9	0.18
+uniaxialMaterial	Steel01	1016	168.8	56.6	0.1
+uniaxialMaterial	ElasticBilin	1036	637.8	3.0	0.09
+
+
+uniaxialMaterial Parallel 1021 1011 1031
+uniaxialMaterial Parallel 1022 1012 1032
+uniaxialMaterial Parallel 1023 1013 1033
+uniaxialMaterial Parallel 1024 1014 1034
+uniaxialMaterial Parallel 1025 1015 1035
+uniaxialMaterial Parallel 1026 1016 1036
+
+
+### Option 1
+element twoNodeLink 1001 20 31 -mat 1021 -dir 1 
+element twoNodeLink 1002 40 31 -mat 1021 -dir 1 
+
+element twoNodeLink 1003 2105 32 -mat 1022 -dir 1 
+element twoNodeLink 1004 4110 32 -mat 1022 -dir 1 
+
+element twoNodeLink 1005 2205 33 -mat 1023 -dir 1 
+element twoNodeLink 1006 4210 33 -mat 1023 -dir 1 
+
+element twoNodeLink 1007 2305 34 -mat 1024 -dir 1 
+element twoNodeLink 1008 4310 34 -mat 1024 -dir 1 
+
+element twoNodeLink 1009 2405 35 -mat 1025 -dir 1 
+element twoNodeLink 1010 4410 35 -mat 1025 -dir 1 
+
+element twoNodeLink 1011 2505 36 -mat 1026 -dir 1 
+element twoNodeLink 1012 4510 36 -mat 1026 -dir 1 
+
 
 
 puts "Model Built"

@@ -349,7 +349,7 @@ proc runNRHA {Dt Tmax Dc tNode bNode log {pflag 0}} {
 			if {$caccelX>=[lindex $maccelX $i]} {set maccelX [lreplace $maccelX $i $i $caccelX]};
 			}
 
-		# if {$mdrft>=$Dc} {set cIndex 1; set mdrft $Dc; wipe}; 			# Set the state of the model to local collapse (=1)
+		#if {$mdrft>=$Dc} {set cIndex 1; set mdrft $Dc; wipe}; 			# Set the state of the model to local collapse (=1)
 
 	}
 
@@ -596,23 +596,19 @@ proc run_analysis {analysistype {dataDir ""} PO Reactions nodes beams columns da
 		puts "Performing NRHA"
 		file mkdir $dataDir;
 		file mkdir $dataDir/log;
-		set  N_motions 20.0; # Number of ground motions 44, 56, 20
-		## C:/Users/wcarofil/Desktop/Waterloo/NS_paper/NF_FEMA
-		## C:/Users/wcarofil/Documents/backup_file_wilson/E/Fall2022/ML/Project/3S/bin/FEMA_GMR
+		set  N_motions 20.0; # Number of ground motions
 		set dtsfile 		"C:/Users/wcarofil/Desktop/Waterloo/NS_paper/GM4/dt.txt";
 		set dursfile 		"C:/Users/wcarofil/Desktop/Waterloo/NS_paper/GM4/duration.txt";
 		
 		# set dtsfile 		"C:/Users/wcarofil/Documents/backup_file_wilson/E/Fall2022/ML/Project/3S/bin/FEMA_GMR/dt.txt";
 		# set dursfile 		"C:/Users/wcarofil/Documents/backup_file_wilson/E/Fall2022/ML/Project/3S/bin/FEMA_GMR/duration.txt";
 		
-		
 		set dts_list 		[read [open $dtsfile "r"]];
 		set durs_list 		[read [open $dursfile "r"]];
 
 		#### For IDA 
 		#set Sa_IDA 		"D:/Waterloo/ConferencePaper_5SPONSE/Bare/bin/FEMA_GMR/Sa_IDA_factor.txt";
-		set Sa_IDA 		"C:/Users/wcarofil/Desktop/Waterloo/NS_paper/6S/bin/Outputs_NRHA_GM4/Sa_IDA_factor.txt";
-
+		set Sa_IDA 		"C:/Users/wcarofil/Desktop/Waterloo/NS_paper/6S_SCBRB_M1/bin/Outputs_NRHA_GM4/Sa_IDA_factor.txt";
 		set Sa_IDA_list 		[read [open $Sa_IDA "r"]];
 
 
@@ -626,13 +622,14 @@ proc run_analysis {analysistype {dataDir ""} PO Reactions nodes beams columns da
 			set Tmax		[lindex $durs_list $r-1];	# Current duration
 			#set EQnameX	 		"C:/Users/wcarofil/Desktop/Waterloo/NS_paper/GM4/eq${r}.txt";
 			set EQnameX	 		"C:/Users/wcarofil/Desktop/Waterloo/NS_paper/GM4/eq${r}.txt";
-			set EQnameX		[read [open $EQfile "r"]];
-			set sfX			[expr 1.0*$g];
+			
+			#et EQnameX		[read [open $EQfile "r"]];
+			#set sfX			[expr 1.0*$g];
 
 			### For IDA
-			# set f_IDA		[lindex $Sa_IDA_list $r-1];	# Scaling factor to 1g
-			# set num_IDA 	0.2
-			# set sfX			[expr ($f_IDA*$num_IDA)*$g];
+			set f_IDA		[lindex $Sa_IDA_list $r-1];	# Scaling factor to 1g
+			set num_IDA 	8.0
+			set sfX			[expr ($f_IDA*$num_IDA)*$g];
 
 
 			##Gravity Analysis
